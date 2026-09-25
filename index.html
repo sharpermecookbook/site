@@ -4597,7 +4597,7 @@ function renderHome() {
         <p>${EDITION.tagline}</p>
         ${EDITION.ask ? `
           <button class="namebtn" type="button" data-name>
-            ${who ? `&#9998; Not ${esc(who)}?` : "&#9998; Put your child&rsquo;s name on it"}</button>
+            ${who ? `&#9998; Not ${esc(who)}?` : "&#9998; Add your child&rsquo;s name here"}</button>
           <form class="nameform" data-nameform hidden>
             <input type="text" maxlength="22" autocomplete="off" spellcheck="false"
                    placeholder="Whose book is this?" aria-label="Whose book is this?">
@@ -4739,7 +4739,7 @@ function renderGuide() {
       }${
         /* only the shared copy has the name button; ours already carries hers */
         EDITION.ask ? q("How do I put my child&rsquo;s name on the book?", `
-          <p>On the home page, tap <b>&#9998; Put your child&rsquo;s name on it</b> under the title, type their name and tap <b>Done</b>. The cover then reads, for example, &ldquo;Amelia&rsquo;s Little Cookbook&rdquo;.</p>
+          <p>On the home page, tap <b>&#9998; Add your child&rsquo;s name here</b> under the title, type their name and tap <b>Done</b>. The cover then reads, for example, &ldquo;Amelia&rsquo;s Little Cookbook&rdquo;.</p>
           <p>The name is saved only on this phone or tablet and is never sent anywhere. To change it, tap <b>&#9998; Not Amelia?</b> and type a new one.</p>`) : ""
       }${
         q("How do I read an ingredient card?", `
