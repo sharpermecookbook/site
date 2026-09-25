@@ -1223,17 +1223,19 @@ const RECIPES = [
       { pic: "🍯", icon: "maple", word: "maple syrup", qty: { type: "tbsp", n: 1 } },
       { pic: "🍫", word: "choco chips", icon: "choco-chips", qty: { type: "tbsp", n: 1 } },
     ],
-    tools: ["cup", "spoon", "knife-kid", "board"],
+    tools: ["bowl", "cup", "spoon", "knife-kid", "board"],
+    /* the syrup is stirred through the yoghurt first, then layered (asked
+       9/25) — sweet all the way down instead of only on the top */
     steps: [
       { pic: "{fruit-chop}", text: "Chop your fruit", use: ["strawberries or your favourite fruit"] },
+      { pic: "{yog-syrup}", text: "Stir the syrup into the yoghurt", use: ["Greek yoghurt", "maple syrup"] },
       { pic: "{pot-yog1}", text: "Spoon yoghurt into the cup", use: ["Greek yoghurt"] },
       { pic: "{pot-fruit1}", text: "Add a layer of fruit", use: ["strawberries or your favourite fruit"] },
       { pic: "{pot-yog2}", text: "Spoon more yoghurt on", use: ["Greek yoghurt"] },
       { pic: "{pot-fruit2}", text: "Add more fruit on top", use: ["strawberries or your favourite fruit"] },
-      { pic: "{pot-syrup}", text: "Drizzle the syrup on", use: ["maple syrup"] },
       { pic: "{pot-chips}", text: "Sprinkle the choco chips and eat!", use: ["choco chips"] },
     ],
-    grownup: "No cooking, no grown-up steps — she can build the whole pot herself, which is why it is in the book. A tall clear cup or glass, not a bowl: the layers are the whole idea and a bowl hides them. About 1 cup plain Greek yoghurt and 1 cup of chopped fruit, spooned in as four bands — yoghurt, fruit, yoghurt, fruit — then 1 tbsp maple syrup and 1 tbsp chocolate chips over the top. Roughly 25 g protein. Strawberries, raspberries and peaches are on the card because Neil named those three and they layer well: strawberries and peaches want slicing, raspberries go in whole, and any of them can be swapped for whatever is in the fridge. The cutting is the only knife work and it is hers — a kid-safe nylon knife and a board handle a ripe strawberry or a soft peach without anything to press through. Frozen fruit works if you let it sit ten minutes, but thawed berries bleed into the yoghurt and the bands stop reading, so fresh is worth it here. Press each layer gently flat with the back of the spoon before the next one goes on — that is what keeps the stripes level instead of sliding into a heap.",
+    grownup: "No cooking, no grown-up steps — she can build the whole pot herself, which is why it is in the book. A tall clear cup or glass, not a bowl: the layers are the whole idea and a bowl hides them. About 1 cup plain Greek yoghurt and 1 cup of chopped fruit, with 1 tbsp maple syrup stirred through the yoghurt in a bowl first, then spooned in as four bands — yoghurt, fruit, yoghurt, fruit — and 1 tbsp chocolate chips over the top. Roughly 25 g protein. Strawberries, raspberries and peaches are on the card because Neil named those three and they layer well: strawberries and peaches want slicing, raspberries go in whole, and any of them can be swapped for whatever is in the fridge. The cutting is the only knife work and it is hers — a kid-safe nylon knife and a board handle a ripe strawberry or a soft peach without anything to press through. Frozen fruit works if you let it sit ten minutes, but thawed berries bleed into the yoghurt and the bands stop reading, so fresh is worth it here. Press each layer gently flat with the back of the spoon before the next one goes on — that is what keeps the stripes level instead of sliding into a heap.",
   },
   {
     id: "protein-bagels",
@@ -3964,6 +3966,13 @@ const SCENES = {
     strawHalf(28, 62, 1.5) + strawHalf(50, 62, 1.5) + strawHalf(72, 62, 1.5) +
     knife(4, 6, CLR.nylon)),
 
+  /* looking down into the big bowl: a ribbon of syrup on the yoghurt, the
+     spoon turning it through */
+  "yog-syrup": () => scene(
+    bowlTopFill(CLR.pot) +
+    `<path d="M32 44 Q42 36 50 44 Q58 52 68 44" fill="none" stroke="${CLR.syrup}" stroke-width="5" stroke-linecap="round"/>` +
+    spoonIn(50, 70, 16, 54, CLR.metal) + bowlTop() + motion()),
+
   /* the first layer going in. The spoon leans in from outside the frame — one
      that fits inside it reads as a lollipop rather than a spoon being held. */
   "pot-yog1": () => scene(
@@ -4001,7 +4010,7 @@ const SCENES = {
   "pot-chips": () => scene(
     chip(37, 11, 6) + chip(50, 7, 6.4) + chip(63, 11, 6) +
     cup(cupBottom(CLR.pot, 72) + cupFruitLo() +
-        cupLayer(CLR.pot, 45, 58) + cupFruitHi() + POT_SYRUP +
+        cupLayer(CLR.pot, 45, 58) + cupFruitHi() +
         chip(40, 30, 5.6) + chip(51, 27.5, 5.6) + chip(61, 31, 5.2))),
 
   /* ---- protein bagels ---- */
