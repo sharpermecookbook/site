@@ -513,14 +513,15 @@
      so it wins; the grey is mixed from ink into the card colour, so it is
      solid over the painted backdrop and holds in dark mode too. */
   .guide-link {
-    background-color: color-mix(in srgb, var(--ink) 9%, var(--surface));
-    background-image: none; box-shadow: none; color: var(--ink-soft);
+    background-color: color-mix(in srgb, var(--ink) 16%, var(--surface));
+    background-image: none; box-shadow: none; color: var(--ink);
     font-size: 0.88rem; padding: 7px 14px 7px 11px;
     margin-left: 0;   /* left, in line with the filters and the grid (asked 9/25) */
   }
-  .guide-link:hover { transform: none; background-color: color-mix(in srgb, var(--ink) 14%, var(--surface)); }
+  .guide-link:hover { transform: none; background-color: color-mix(in srgb, var(--ink) 22%, var(--surface)); }
+  .guide-link .sub, .guide-link .arrow { color: color-mix(in srgb, var(--ink) 72%, var(--surface)); }
   .guide-link b { font-weight: 700; }
-  .guide-link .bk { font-size: 1rem; filter: grayscale(1); opacity: 0.7; }
+  .guide-link .bk { font-size: 1rem; filter: grayscale(1); opacity: 0.85; }
 
   /* ============ the two destinations ============ */
   .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -4905,6 +4906,17 @@ function route() {
   window.scrollTo(0, 0);
 }
 window.addEventListener("hashchange", route);
+/* A fresh open always starts on the home page (asked 9/25: "each time I
+   reopen the app it's taking me to FAQ"). The FAQ tells you how to add the
+   book to the Home Screen, so people do it from that page — and the icon
+   then saves #guide as its address. Launched from the Home Screen, any saved
+   page is dropped; in a browser only #guide is, so a shared recipe link
+   still opens its recipe. */
+const fromHomeScreen = navigator.standalone === true ||
+  window.matchMedia("(display-mode: standalone)").matches;
+if (location.hash && (fromHomeScreen || location.hash === "#guide")) {
+  history.replaceState(null, "", location.pathname + location.search);
+}
 route();
 </script>
 
