@@ -4765,6 +4765,10 @@ function renderGuide() {
           <p>It then opens from its own icon, full screen, like an app.</p>
           <p><b>iPhone or iPad:</b> open the book in Safari, tap <b>Share</b> (the square with an arrow), then <b>Add to Home Screen</b>, then <b>Add</b>.</p>
           <p><b>Android:</b> open the book in Chrome, tap the <b>⋮</b> menu, then <b>Add to Home screen</b> (or <b>Install app</b>).</p>`)
+      }${
+        /* shared copy only: an invitation to readers (asked 9/25) */
+        EDITION.ask ? q("Want to add your own recipe?", `
+          <p>Email your recipe to <a href="mailto:contact@sharpermekids.com">contact@sharpermekids.com</a> to submit it to be added to the book.</p>`) : ""
       }
       </div>
     </div>`;
