@@ -432,6 +432,8 @@
   .guide-link .arrow { color: var(--ink-faint); font-size: 1.05rem; }
   .build { text-align: center; margin: 18px 0 0; font-size: 0.76rem; font-weight: 600;
            color: var(--ink-faint); letter-spacing: 0.02em; }
+  .build.addrec { margin-top: 6px; }
+  .build.addrec a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
   /* ============ recipe head ============ */
   /* The bar keeps the button's height so nothing jumps when the button leaves
@@ -4644,7 +4646,9 @@ function renderHome() {
     </a>
     <div class="filters" role="group" aria-label="Show which meals">${filters}</div>
     <div class="grid" data-tiles>${cards}</div>
-    <p class="build">Updated ${BUILD} &middot; ${RECIPES.length} recipes</p>`;
+    <p class="build">Updated ${BUILD} &middot; ${RECIPES.length} recipes</p>${
+      /* shared copy only, in the same quiet grey as the line above (asked 9/25) */
+      EDITION.ask ? `<p class="build addrec">Want to add a recipe? Email <a href="mailto:contact@sharpermekids.com">contact@sharpermekids.com</a></p>` : ""}`;
 }
 
 function renderRecipe(r) {
