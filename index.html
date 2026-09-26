@@ -182,6 +182,13 @@
     transition: transform 0.14s ease;
   }
   .namebtn:active { transform: scale(0.94); }
+  
+  .namepen {
+    border: 0; background: none; cursor: pointer; font: inherit;
+    font-size: 0.4em; vertical-align: 0.35em; margin-left: 0.3em; padding: 4px;
+    color: var(--ink-soft); opacity: 0.55; line-height: 1;
+  }
+  .namepen:active { opacity: 1; }
   .nameform { margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   
   .nameform[hidden] { display: none; }
@@ -4005,14 +4012,14 @@ function renderHome() {
   return `
     <header class="hero th-mango">
       <div>
-        <h1>${who ? `${esc(who)}&rsquo;s ${EDITION.title}` : EDITION.title}</h1>
+        <h1>${who ? `${esc(who)}&rsquo;s ${EDITION.title}` : EDITION.title}${
+          EDITION.ask && who ? `<button class="namepen" type="button" data-name aria-label="Change the name">&#9998;</button>` : ""}</h1>
         
         <span class="by">by</span>
         ${logoIMG()}
         <p>${EDITION.tagline}</p>
-        ${EDITION.ask ? `
-          <button class="namebtn" type="button" data-name>
-            ${who ? `&#9998; Not ${esc(who)}?` : "&#9998; Add your child&rsquo;s name here"}</button>
+        ${EDITION.ask ? `${who ? "" : `
+          <button class="namebtn" type="button" data-name>&#9998; Add your child&rsquo;s name here</button>`}
           <form class="nameform" data-nameform hidden>
             <input type="text" maxlength="22" autocomplete="off" spellcheck="false"
                    placeholder="Whose book is this?" aria-label="Whose book is this?">
@@ -4146,7 +4153,7 @@ function renderGuide() {
         
         EDITION.ask ? q("How do I put my child&rsquo;s name on the book?", `
           <p>On the home page, tap <b>&#9998; Add your child&rsquo;s name here</b> under the title, type their name and tap <b>Done</b>. The cover then reads, for example, &ldquo;Amelia&rsquo;s Little Cookbook&rdquo;.</p>
-          <p>The name is saved only on this phone or tablet and is never sent anywhere. To change it, tap <b>&#9998; Not Amelia?</b> and type a new one.</p>`) : ""
+          <p>The name is saved only on this phone or tablet and is never sent anywhere. To change it, tap the small <b>&#9998;</b> next to the title and type a new one.</p>`) : ""
       }${
         q("How do I read an ingredient card?", `
           <p>Name at the top, picture in the middle, how much along the bottom.</p>
