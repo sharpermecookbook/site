@@ -384,6 +384,8 @@
   
   .build.addrec { margin-top: 6px; }
   .build.addrec a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  
+  .build .cc { font-size: 1.35em; line-height: 0; vertical-align: -0.1em; }
 
   
   
@@ -777,7 +779,7 @@
 <div class="page sm" id="app"></div>
 
 <script>
-const BUILD = "27 Sep 2026";
+const BUILD = "28 Sep 2026";
 
 
 const EDITION = {
@@ -4088,7 +4090,8 @@ function renderHome() {
     <div class="grid" data-tiles>${cards}</div>
     <p class="build">Updated ${BUILD} &middot; ${RECIPES.length} recipes</p>${
       
-      EDITION.ask ? `<p class="build addrec">Want to add a recipe? Email <a href="mailto:contact@sharpermekids.com">contact@sharpermekids.com</a></p>` : ""}`;
+      EDITION.ask ? `<p class="build addrec">Want to add a recipe? Email <a href="mailto:contact@sharpermekids.com">contact@sharpermekids.com</a></p>
+    <p class="build addrec"><span class="cc">&copy;</span> 2026 Sharper Me</p>` : ""}`;   
 }
 
 function renderRecipe(r) {
