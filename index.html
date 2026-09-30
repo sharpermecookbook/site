@@ -37,6 +37,7 @@
     --lift-hi: 0 2px 6px rgba(22, 23, 31, 0.06), 0 18px 40px -18px rgba(22, 23, 31, 0.42);
     --ok: #10B981;
     --ok-soft: rgba(16, 185, 129, 0.13);
+    --heart: #E5485F;
     --r-lg: 30px;
     --r-md: 22px;
     --r-sm: 15px;
@@ -64,6 +65,7 @@
       --lift-hi: 0 2px 8px rgba(0, 0, 0, 0.55), 0 22px 46px -20px rgba(0, 0, 0, 0.95);
       --ok: #34D399;
       --ok-soft: rgba(52, 211, 153, 0.16);
+      --heart: #FF7A93;
       --t-mango-a: #FBBF4C; --t-mango-i: #FFDCA3; --t-mango-s: rgba(251, 191, 76, 0.16);
       --t-cherry-a: #FF7A93; --t-cherry-i: #FFC6D2; --t-cherry-s: rgba(255, 122, 147, 0.16);
       --t-berry-a: #8CA2FF; --t-berry-i: #CBD6FF; --t-berry-s: rgba(140, 162, 255, 0.16);
@@ -86,6 +88,7 @@
     --lift-hi: 0 2px 8px rgba(0, 0, 0, 0.55), 0 22px 46px -20px rgba(0, 0, 0, 0.95);
     --ok: #34D399;
     --ok-soft: rgba(52, 211, 153, 0.16);
+    --heart: #FF7A93;
     --t-mango-a: #FBBF4C; --t-mango-i: #FFDCA3; --t-mango-s: rgba(251, 191, 76, 0.16);
     --t-cherry-a: #FF7A93; --t-cherry-i: #FFC6D2; --t-cherry-s: rgba(255, 122, 147, 0.16);
     --t-berry-a: #8CA2FF; --t-berry-i: #CBD6FF; --t-berry-s: rgba(140, 162, 255, 0.16);
@@ -107,6 +110,7 @@
     --lift-hi: 0 2px 6px rgba(22, 23, 31, 0.06), 0 18px 40px -18px rgba(22, 23, 31, 0.42);
     --ok: #10B981;
     --ok-soft: rgba(16, 185, 129, 0.13);
+    --heart: #E5485F;
     --t-mango-a: #F59E0B; --t-mango-i: #8A4A00; --t-mango-s: rgba(245, 158, 11, 0.13);
     --t-cherry-a: #F43F5E; --t-cherry-i: #9F1239; --t-cherry-s: rgba(244, 63, 94, 0.12);
     --t-berry-a: #4F6BF6; --t-berry-i: #26389B; --t-berry-s: rgba(79, 107, 246, 0.12);
@@ -365,6 +369,18 @@
     .tbadge .dot { width: 28px; height: 28px; }
     .tbadge svg.tk { width: 16px; height: 16px; }
   }
+  
+  .favmark { position: absolute; top: 10px; right: 10px; z-index: 2; color: var(--heart); line-height: 0; }
+  .favmark svg.heart { width: 26px; height: 26px; display: block; }
+  @media (max-width: 480px) {
+    .favmark { top: 9px; right: 8px; }
+    .favmark svg.heart { width: 24px; height: 24px; }
+  }
+  
+  .favs { margin: 0 0 22px; }
+  .favhead { display: flex; align-items: center; gap: 7px; }
+  .favhead svg.heart { width: 17px; height: 17px; flex: none; color: var(--heart); }
+  .ans svg.heart { width: 1.1em; height: 1.1em; vertical-align: -0.18em; color: var(--heart); }
 
   
   .guide-link {
@@ -400,6 +416,22 @@
     transition: transform 0.15s ease;
   }
   a.back:active { transform: scale(0.92); }
+
+  
+  .fav {
+    position: absolute; top: 14px; right: max(14px, calc(50vw - 470px - 76px)); z-index: 60;
+    width: 64px; height: 64px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
+    background: var(--surface); box-shadow: var(--lift-hi); color: var(--ink);
+    display: grid; place-items: center;
+    transition: transform 0.15s ease;
+  }
+  .fav:active { transform: scale(0.92); }
+  .fav svg.heart { width: 34px; height: 34px; display: block; }
+  .fav.on { color: var(--heart); }
+  .fav.pop svg.heart { animation: favpop 0.4s cubic-bezier(0.2, 0.7, 0.3, 1); }
+  @keyframes favpop { 0% { transform: scale(1); } 40% { transform: scale(1.32); } 100% { transform: scale(1); } }
+  svg.heart path { fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linejoin: round; }
+  .fav.on svg.heart path, .favmark svg.heart path, .favhead svg.heart path, .ans svg.heart path { fill: currentColor; }
 
   
   .rhead {
@@ -761,10 +793,11 @@
   }
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
+    .fav.pop svg.heart { animation: none; }
   }
   @media print {
     body { background: #fff; }
-    .back, .reset, .guide-link, .progress, .tabs, .filters { display: none; }
+    .back, .fav, .reset, .guide-link, .progress, .tabs, .filters { display: none; }
     
     .tile[hidden] { display: flex !important; }
     
@@ -779,7 +812,7 @@
 <div class="page sm" id="app"></div>
 
 <script>
-const BUILD = "28 Sep 2026";
+const BUILD = "30 Sep 2026";
 
 
 const EDITION = {
@@ -4001,6 +4034,16 @@ function isDouble(id) {
 function setDouble(id, on) {
   try { localStorage.setItem(DOUBLE_KEY(id), on ? "1" : "0"); } catch {}
 }
+
+const FAV_KEY = r => `cookbook:${r}:fav`;
+function isFav(id) {
+  try { return localStorage.getItem(FAV_KEY(id)) === "1"; } catch { return false; }
+}
+function setFav(id, on) {
+  try { if (on) localStorage.setItem(FAV_KEY(id), "1"); else localStorage.removeItem(FAV_KEY(id)); } catch {}
+}
+
+const HEART = `<svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3C12 20.3 3.2 15 3.2 8.9 3.2 6.2 5.3 4.2 7.8 4.2c1.8 0 3.3 1 4.2 2.4.9-1.4 2.4-2.4 4.2-2.4 2.5 0 4.6 2 4.6 4.7 0 6.1-8.8 11.4-8.8 11.4Z"/></svg>`;
 function batchOf(r) {
   if (hasHalf(r) && isHalf(r.id)) return "half";
   return isDouble(r.id) ? "double" : "";
@@ -4048,17 +4091,20 @@ const MEALS = [["breakfast", "Breakfast"], ["lunch", "Lunch and dinner", "Lunch"
 
 function renderHome() {
   const who = EDITION.ask ? kidName() : "";
+  
   const tile = (r, meal) => {
     return `
-    <a class="tile th-${r.theme}" href="#r/${r.id}" data-meal="${meal}">
-      ${timeBadge(r)}
+    <a class="tile th-${r.theme}" href="#r/${r.id}"${meal ? ` data-meal="${meal}"` : ""}>
+      ${timeBadge(r)}${isFav(r.id) ? `<span class="favmark" role="img" aria-label="favourite">${HEART}</span>` : ""}
       <span class="row"><span class="art">${coverArt(r)}</span></span>
       <span class="name">${r.name}</span>
     </a>`;
   };
-  const cards = RECIPES.slice()
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .map(r => tile(r, r.meal)).join("");
+  const byName = RECIPES.slice().sort((a, b) => a.name.localeCompare(b.name));
+  const cards = byName.map(r => tile(r, r.meal)).join("");
+  const favs = byName.filter(r => isFav(r.id));
+  
+  const favTitle = who ? `${esc(who)}&rsquo;s favourites` : "My favourites";
   
   const filters = [["all", "All"], ...MEALS].map(([key, label, short]) => `
     <button class="filt${key === "all" ? " sel" : ""}" type="button"
@@ -4085,7 +4131,11 @@ function renderHome() {
     
     <a class="guide-link th-berry" href="#guide">
       <span class="bk">📖</span><b>For grown-ups</b><span class="sub">how to use this book</span><span class="arrow">&rarr;</span>
-    </a>
+    </a>${favs.length ? `
+    <section class="favs" data-favs aria-label="${favTitle}">
+      <h2 class="sec favhead">${HEART}<span>${favTitle}</span></h2>
+      <div class="grid">${favs.map(r => tile(r, "")).join("")}</div>
+    </section>` : ""}
     <div class="filters" role="group" aria-label="Show which meals">${filters}</div>
     <div class="grid" data-tiles>${cards}</div>
     <p class="build">Updated ${BUILD} &middot; ${RECIPES.length} recipes</p>${
@@ -4098,6 +4148,7 @@ function renderRecipe(r) {
   const done = loadDone(r.id);
   const batch = batchOf(r);
   const half = batch === "half", dbl = batch === "double";
+  const fav = isFav(r.id);
   const tools = toolsFor(r);
   const total = r.ingredients.length + tools.length + r.steps.length;
   const pct = total ? Math.round((done.size / total) * 100) : 0;
@@ -4141,7 +4192,8 @@ function renderRecipe(r) {
 
   return `
     <div class="th-${r.theme}" data-recipe="${r.id}" data-total="${total}">
-      <div class="bar"><a class="back" href="#" aria-label="All recipes">←</a></div>
+      <div class="bar"><a class="back" href="#" aria-label="All recipes">←</a><button class="fav${fav ? " on" : ""}"
+        type="button" data-fav aria-pressed="${fav}" aria-label="Favourite">${HEART}</button></div>
       <div class="rhead">
         <span class="art">${coverArt(r)}</span>
         <h1>${r.name}</h1>
@@ -4232,6 +4284,10 @@ function renderGuide() {
         q("How do I tick things off?", `
           <p>Tap a card once it is on the counter, and a step once it is done. A tick appears and the bar at the top fills up. Tap again to untick. <b>Start over</b> clears the recipe.</p>`)
       }${
+        q("How do I save a favourite?", `
+          <p>Tap the heart in the top corner of a recipe so it turns red ${HEART}. The recipe then appears in the favourites row at the top of the home page. Tap the heart again to take it off.</p>
+          <p>Favourites are saved only on this phone or tablet.</p>`)
+      }${
         q("What does the chef badge mean?", `
           <p><span class="chefdemo">🧑‍🍳<em>grown-up</em></span></p>
           <p>A step with this badge needs a grown-up &mdash; the oven, the hob or a sharp knife.</p>`)
@@ -4296,6 +4352,19 @@ document.addEventListener("submit", e => {
 document.addEventListener("click", e => {
   const root = document.querySelector("[data-recipe]");
   if (!root) return;
+
+  
+  const fb = e.target.closest("[data-fav]");
+  if (fb) {
+    const id = root.dataset.recipe;
+    setFav(id, !isFav(id));
+    const on = isFav(id);
+    fb.classList.toggle("on", on);
+    fb.setAttribute("aria-pressed", on);
+    fb.classList.remove("pop");
+    if (on) { void fb.offsetWidth; fb.classList.add("pop"); }   
+    return;
+  }
 
   const hb = e.target.closest("[data-half], [data-double]");
   if (hb) {
